@@ -4,6 +4,7 @@ import com.assignment.hospitalmanagementsystem.entities.Patient;
 import com.assignment.hospitalmanagementsystem.servicelayers.DoctorService;
 import com.assignment.hospitalmanagementsystem.servicelayers.PatientService;
 import com.assignment.hospitalmanagementsystem.transformers.PatientTransformer;
+import com.assignment.hospitalmanagementsystem.utility.EnumValidations;
 import com.assignment.hospitalmanagementsystemdtos.requestdtos.PatientRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,10 +24,9 @@ public class PatientController {
     @PostMapping("/addDetails")
     public ResponseEntity addDetails(@RequestBody PatientRequest patient){
         try {
+            EnumValidations.symptomCheck(patient.getSymptom());
             return new ResponseEntity(patientService.addDetails(PatientTransformer.patientRequestToPatient(patient)),
                     HttpStatus.CREATED);
-        }catch (HttpMessageNotReadableException e){
-            return new ResponseEntity("It is not one of the values",HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

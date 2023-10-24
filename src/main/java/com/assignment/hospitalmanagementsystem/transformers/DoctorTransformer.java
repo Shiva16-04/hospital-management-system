@@ -15,8 +15,8 @@ public class DoctorTransformer {
         log.info("Executing method: doctorRequestToDoctor (in Transformer package) to get the Doctor entity");
         return Doctor.builder()
                 .name(doctorRequest.getName())
-                .speciality(doctorRequest.getSpeciality())
-//                .city(doctorRequest.getCity())
+                .speciality(Speciality.valueOf(doctorRequest.getSpeciality()))
+                .city(City.valueOf(doctorRequest.getCity()))
                 .phoneNumber(doctorRequest.getPhoneNumber())
                 .email(doctorRequest.getEmail())
                 .build();

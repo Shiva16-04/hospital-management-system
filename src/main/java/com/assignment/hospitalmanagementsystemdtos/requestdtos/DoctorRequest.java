@@ -11,8 +11,8 @@ import lombok.*;
 @Builder
 public class DoctorRequest {
     String name;
-    Speciality speciality;
-    City city;
+    String speciality;
+    String city;
     String phoneNumber;
     String email;
 }

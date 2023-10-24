@@ -10,7 +10,7 @@ import lombok.*;
 @Builder
 public class PatientRequest {
     String name;
-    Symptoms symptom;
+    String symptom;
     String city;
     String phoneNumber;
     String email;

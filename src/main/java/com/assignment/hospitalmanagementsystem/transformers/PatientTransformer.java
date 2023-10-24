@@ -18,7 +18,7 @@ public class PatientTransformer {
                 .city(patientRequest.getCity())
                 .email(patientRequest.getEmail())
                 .phoneNumber(patientRequest.getPhoneNumber())
-                .symptom(patientRequest.getSymptom())
+                .symptom(Symptoms.valueOf(patientRequest.getSymptom()))
                 .build();
     }
     public static PatientResponse patientToPatientResponse(Patient patient){
