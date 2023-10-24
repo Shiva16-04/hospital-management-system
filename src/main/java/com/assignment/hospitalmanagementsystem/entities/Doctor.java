@@ -4,6 +4,7 @@ import com.assignment.hospitalmanagementsystem.enums.City;
 import com.assignment.hospitalmanagementsystem.enums.Speciality;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -19,6 +20,7 @@ import static jakarta.persistence.EnumType.STRING;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Doctor {
     @Id
@@ -34,6 +36,7 @@ public class Doctor {
     Speciality speciality;
     @Column(name = "city", nullable = false)
     @Enumerated(value = EnumType.STRING)
+//    @NotEmpty(message = "should be one of valid")
     City city;
     @Column(name = "contact_number", nullable = false)
     @Size(min=10,message = "should be at least 10 number")

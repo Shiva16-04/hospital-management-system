@@ -1,10 +1,14 @@
 package com.assignment.hospitalmanagementsystem.controllerlayers;
 
 import com.assignment.hospitalmanagementsystem.entities.Patient;
+import com.assignment.hospitalmanagementsystem.servicelayers.DoctorService;
 import com.assignment.hospitalmanagementsystem.servicelayers.PatientService;
+import com.assignment.hospitalmanagementsystem.transformers.PatientTransformer;
+import com.assignment.hospitalmanagementsystemdtos.requestdtos.PatientRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -12,12 +16,17 @@ import org.springframework.web.bind.annotation.*;
 public class PatientController {
     @Autowired
     private PatientService patientService;
+    @Autowired
+    private DoctorService doctorService;
 
     //Method 1: adding patient to the db
     @PostMapping("/addDetails")
-    public ResponseEntity addDetails(@RequestBody Patient patient){
+    public ResponseEntity addDetails(@RequestBody PatientRequest patient){
         try {
-            return new ResponseEntity(patientService.addDetails(patient), HttpStatus.CREATED);
+            return new ResponseEntity(patientService.addDetails(PatientTransformer.patientRequestToPatient(patient)),
+                    HttpStatus.CREATED);
+        }catch (HttpMessageNotReadableException e){
+            return new ResponseEntity("It is not one of the values",HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

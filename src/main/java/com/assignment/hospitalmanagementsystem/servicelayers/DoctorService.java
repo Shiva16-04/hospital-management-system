@@ -4,7 +4,8 @@ import com.assignment.hospitalmanagementsystem.entities.Doctor;
 import com.assignment.hospitalmanagementsystem.entities.Patient;
 import com.assignment.hospitalmanagementsystem.handledexceptions.DoctorAlreadyPresentException;
 import com.assignment.hospitalmanagementsystem.repositorylayers.DoctorRepository;
-import com.assignment.hospitalmanagementsystem.responseobjects.DoctorDTO;
+import com.assignment.hospitalmanagementsystem.transformers.DoctorTransformer;
+import com.assignment.hospitalmanagementsystemdtos.responsedtos.DoctorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,32 +24,19 @@ public class DoctorService {
         log.info("Executing method: addDoctor (Doctor service layer)");
         Optional<Doctor> doctorFromDB=doctorRepository.findByEmail(doctor.getEmail());
         if(doctorFromDB.isPresent()){
-            throw new DoctorAlreadyPresentException(doctor.getName()+" is already present in the database");
+            throw new DoctorAlreadyPresentException(doctor.getName()+"'s information is already present in the database");
         }else {
-
             doctorRepository.save(doctor);
-            return doctor.getName() + " has been successfully added to the database";
+            return "Doctor "+doctor.getName() + "'s information has been successfully added to the database";
         }
     }
 
     //General methods
 
-    // Method to take patient entity and return PatientDTO/patient response
-    public DoctorDTO doctorResponse(Doctor doctor){
-        log.info("Executing method: doctorResponse (Doctor service layer) to get the DoctorDTO object");
-        DoctorDTO doctorResponse=new DoctorDTO();
-        doctorResponse.setName(doctor.getName());
-        doctorResponse.setSpeciality(doctor.getSpeciality().getDisplayName());
-        doctorResponse.setCity(doctor.getCity().toString());
-        doctorResponse.setPhoneNumber(doctor.getPhoneNumber());
-        doctorResponse.setEmail(doctor.getEmail());
-        return doctorResponse;
-    }
-
     //Method to filter out the list of doctors that matches with the same location of the patient
     public List<Doctor> findByCity(Patient patient){
         log.info("Executing method: findByCity (Doctor service layer) - list of doctor entities - city based ");
-        List<Doctor>doctorList=doctorRepository.findAll();
+        List<Doctor>doctorList=doctorRepository.findAll(); //getting the whole list of doctors
         List<Doctor>doctorResponseList=new ArrayList<>();
         String patientCity=patient.getCity();
         for(Doctor doctor:doctorList){
@@ -56,20 +44,21 @@ public class DoctorService {
                 doctorResponseList.add(doctor);
             }
         }
-        return doctorResponseList;
+        return doctorResponseList; //returning the final list of doctors whose location matches patient
     }
-
     //Method to find the final list of doctors that matches the speciality with patient symptom speciality matching
-    public List<DoctorDTO> findBySpeciality(List<Doctor>doctorList, Patient patient){
+    public List<DoctorResponse> findBySpeciality(List<Doctor>doctorList, Patient patient){
         log.info("Executing method: findBySpeciality (Doctor service layer)- list of doctor DTO - city based->(filtering out)->speciality based");
-        List<DoctorDTO>doctorResponseList=new ArrayList<>();
-        for(Doctor doctor:doctorList){
+        List<DoctorResponse>doctorResponseList=new ArrayList<>();
+        for(Doctor doctor:doctorList){  //doctors list is having info of doctors whose location matches with patient
             String doctorSpeciality=doctor.getSpeciality().getDisplayName();
             String matchingPatientSpeciality=patient.getSymptom().getSpecialityMapping();
             if(doctorSpeciality.equalsIgnoreCase(matchingPatientSpeciality)) {
-                doctorResponseList.add(doctorResponse(doctor));
+                doctorResponseList.add(DoctorTransformer.doctorToDoctorResponse(doctor));
             }
         }
-        return doctorResponseList;
+        return doctorResponseList;  //filtered list with the list of doctors where patients' symptom-speciality map is matching
+        // with the  doctor's speciality
     }
+
 }

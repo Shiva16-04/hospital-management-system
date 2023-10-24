@@ -1,7 +1,8 @@
 package com.assignment.hospitalmanagementsystem.controllerlayers;
 
-import com.assignment.hospitalmanagementsystem.entities.Doctor;
 import com.assignment.hospitalmanagementsystem.servicelayers.DoctorService;
+import com.assignment.hospitalmanagementsystem.transformers.DoctorTransformer;
+import com.assignment.hospitalmanagementsystemdtos.requestdtos.DoctorRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +19,9 @@ public class DoctorController {
 
     //Method 1: adding doctor to the db
     @PostMapping("/addDetails")
-    public ResponseEntity addDetails(@RequestBody Doctor doctor){
+    public ResponseEntity addDetails(@RequestBody DoctorRequest doctor){
         try {
-            return new ResponseEntity(doctorService.addDetails(doctor), HttpStatus.CREATED);
+            return new ResponseEntity(doctorService.addDetails(DoctorTransformer.doctorRequestToDoctor(doctor)), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }

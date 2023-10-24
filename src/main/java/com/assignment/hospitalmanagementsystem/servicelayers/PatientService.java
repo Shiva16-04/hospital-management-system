@@ -2,17 +2,14 @@ package com.assignment.hospitalmanagementsystem.servicelayers;
 
 import com.assignment.hospitalmanagementsystem.entities.Doctor;
 import com.assignment.hospitalmanagementsystem.entities.Patient;
-import com.assignment.hospitalmanagementsystem.enums.City;
-import com.assignment.hospitalmanagementsystem.enums.Speciality;
-import com.assignment.hospitalmanagementsystem.enums.Symptoms;
 import com.assignment.hospitalmanagementsystem.handledexceptions.DoctorsNotAvailableAtTheLocation;
 import com.assignment.hospitalmanagementsystem.handledexceptions.DoctorsNotAvailableForTheSymptom;
 import com.assignment.hospitalmanagementsystem.handledexceptions.PatientAlreadyPresentException;
 import com.assignment.hospitalmanagementsystem.handledexceptions.PatientNotFoundException;
 import com.assignment.hospitalmanagementsystem.repositorylayers.DoctorRepository;
 import com.assignment.hospitalmanagementsystem.repositorylayers.PatientRepository;
-import com.assignment.hospitalmanagementsystem.responseobjects.DoctorDTO;
-import com.assignment.hospitalmanagementsystem.responseobjects.PatientDTO;
+import com.assignment.hospitalmanagementsystemdtos.responsedtos.DoctorResponse;
+import com.assignment.hospitalmanagementsystemdtos.responsedtos.PatientResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,7 +37,7 @@ public class PatientService {
     }
 
     //Method 2: mapping patient to the available doctor
-    public List<DoctorDTO> getAvailableDoctors(Integer patientId)throws Exception{
+    public List<DoctorResponse> getAvailableDoctors(Integer patientId)throws Exception{
         log.info("Executing method: getAvailableDoctors (Patient service layer) - get the available doctors (city+symptom (Speciality))");
         Optional<Patient>patientOptional=patientRepository.findById(patientId);
         if(!patientOptional.isPresent()){
@@ -55,7 +52,7 @@ public class PatientService {
         }
         //covering second edge case
         log.info("Calling Method: findBySpeciality (Doctor service layer)");
-        List<DoctorDTO>doctorResponseList=doctorService.findBySpeciality(doctorList, patient);
+        List<DoctorResponse>doctorResponseList=doctorService.findBySpeciality(doctorList, patient);
         if(doctorResponseList.size()==0){
             throw new DoctorsNotAvailableForTheSymptom("There isn't any doctor present at your location for your symptom");
         }
@@ -64,15 +61,4 @@ public class PatientService {
         }
     }
 
-    //General Method to assign PatientDTO/patient response
-    public PatientDTO patientResponse(Patient patient){
-        log.info("Executing method: patientResponse (Patient service layer) to get the PatientDTO object");
-        PatientDTO patientResponse=new PatientDTO();
-        patientResponse.setName(patient.getName());
-        patientResponse.setSymptom(patient.getSymptom().getDisplayName());
-        patientResponse.setCity(patient.getCity());
-        patientResponse.setPhoneNumber(patient.getPhoneNumber());
-        patientResponse.setEmail(patient.getEmail());
-        return patientResponse;
-    }
 }
