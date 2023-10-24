@@ -9,11 +9,12 @@ import com.assignment.hospitalmanagementsystem.handledexceptions.PatientNotFound
 import com.assignment.hospitalmanagementsystem.repositorylayers.DoctorRepository;
 import com.assignment.hospitalmanagementsystem.repositorylayers.PatientRepository;
 import com.assignment.hospitalmanagementsystemdtos.responsedtos.DoctorResponse;
-import com.assignment.hospitalmanagementsystemdtos.responsedtos.PatientResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.*;
+
+import java.util.List;
+import java.util.Optional;
 @Slf4j
 @Service
 public class PatientService {

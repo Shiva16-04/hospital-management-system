@@ -1,6 +1,5 @@
 package com.assignment.hospitalmanagementsystemdtos.requestdtos;
 
-import com.assignment.hospitalmanagementsystem.enums.Symptoms;
 import lombok.*;
 
 @Setter

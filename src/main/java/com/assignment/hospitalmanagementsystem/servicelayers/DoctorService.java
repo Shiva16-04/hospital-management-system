@@ -2,9 +2,7 @@ package com.assignment.hospitalmanagementsystem.servicelayers;
 
 import com.assignment.hospitalmanagementsystem.entities.Doctor;
 import com.assignment.hospitalmanagementsystem.entities.Patient;
-import com.assignment.hospitalmanagementsystem.enums.City;
 import com.assignment.hospitalmanagementsystem.handledexceptions.DoctorAlreadyPresentException;
-import com.assignment.hospitalmanagementsystem.handledexceptions.OutOfCityListException;
 import com.assignment.hospitalmanagementsystem.repositorylayers.DoctorRepository;
 import com.assignment.hospitalmanagementsystem.transformers.DoctorTransformer;
 import com.assignment.hospitalmanagementsystemdtos.responsedtos.DoctorResponse;
@@ -12,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

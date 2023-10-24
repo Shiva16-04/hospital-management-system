@@ -3,7 +3,6 @@ package com.assignment.hospitalmanagementsystem.entities;
 import com.assignment.hospitalmanagementsystem.enums.Symptoms;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -37,6 +36,7 @@ public class Patient {
     String phoneNumber;
     @Column(name = "email", unique = true, nullable = false)
     @Email(regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$", message = "should be a valid email address")
+    //validating email using RFC 5322 standard
     String email;
     @Column(name = "Symptom", nullable = false)
     @Enumerated(value = EnumType.STRING)

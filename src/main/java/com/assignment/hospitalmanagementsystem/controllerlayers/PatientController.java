@@ -1,6 +1,5 @@
 package com.assignment.hospitalmanagementsystem.controllerlayers;
 
-import com.assignment.hospitalmanagementsystem.entities.Patient;
 import com.assignment.hospitalmanagementsystem.servicelayers.DoctorService;
 import com.assignment.hospitalmanagementsystem.servicelayers.PatientService;
 import com.assignment.hospitalmanagementsystem.transformers.PatientTransformer;
@@ -9,7 +8,6 @@ import com.assignment.hospitalmanagementsystemdtos.requestdtos.PatientRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
